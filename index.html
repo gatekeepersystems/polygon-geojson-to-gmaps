@@ -1,0 +1,94 @@
+<html lang="en">
+  <head>
+    <title>GeoJson Polygon to GMaps Polygon</title>
+    <style>
+      .flex {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .gap {
+        margin: 1rem;
+      }
+
+      .w-full {
+        width: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <div>
+      make your geojson things gmaps things for freeeeee!!!
+    </div>
+    <div class="flex gap">
+      <textarea class="w-full" id="geojson" rows="40" placeholder="{
+        &quot;type&quot;: &quot;FeatureCollection&quot;,
+        &quot;features&quot;: [
+          {
+            &quot;type&quot;: &quot;Feature&quot;,
+            &quot;properties&quot;: {},
+            &quot;geometry&quot;: {
+              &quot;coordinates&quot;: [
+                [
+                  [
+                    -89.30268334988796,
+                    42.794628357176634
+                  ],
+                  [
+                    -89.32673885114762,
+                    42.785188842667594
+                  ],
+                  [
+                    -89.31905445491184,
+                    42.76740922566012
+                  ],
+                  [
+                    -89.29199201599532,
+                    42.761767728848184
+                  ],
+                  [
+                    -89.28597814068,
+                    42.785066242100754
+                  ],
+                  [
+                    -89.30268334988796,
+                    42.794628357176634
+                  ]
+                ]
+              ],
+              &quot;type&quot;: &quot;Polygon&quot;
+            }
+          }
+        ]
+      }"></textarea>
+      <button id="convert">convert</button>
+      <textarea class="w-full" id="gmaps" rows="40"></textarea>
+    </div>
+      
+    </main>
+    <script>
+      (function(){
+      document.querySelector("#convert").addEventListener("click", () => {
+        const geojson = document.querySelector("#geojson").value;
+        const gmaps = document.querySelector("#gmaps");
+        const geojsonObj = JSON.parse(geojson);
+        let gmapsObj = []
+        geojsonObj.features.forEach(feature => {
+          gmapsObj = feature.geometry.coordinates.flatMap((coords) => {
+            return coords.flatMap((coord) => {
+              return {
+                lat: coord[1],
+                lng: coord[0]
+              }
+            });
+          });
+        });
+        gmaps.value = JSON.stringify(gmapsObj, null, 2);
+      });
+    })()
+    </script>
+  </body>
+</html>
